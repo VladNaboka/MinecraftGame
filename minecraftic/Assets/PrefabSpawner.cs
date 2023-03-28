@@ -4,20 +4,23 @@ using UnityEngine;
 
 public class PrefabSpawner : MonoBehaviour
 {
+    public Transform LIMIT;
     public GameObject prefab;
     public float prefabSpacing = 1f;
-    public Vector3 startPosition = new Vector3(0f, 0f, 0f);
+    public Transform origin;
     public Vector2Int gridDimensions = new Vector2Int(8, 8);
     public float spawnHeight;
     public Vector3 respawnPosition = new Vector3(0f, -1f, 0f);
-
+    public Vector3 startPosition;
     private List<GameObject> spawnedPrefabs = new List<GameObject>();
 
     void Start()
     {
+        startPosition = origin.position;
         // Spawn prefabs in a grid
         for (int x = 0; x < gridDimensions.x; x++)
         {
+
             for (int z = 0; z < gridDimensions.y; z++)
             {
                 Vector3 spawnPosition = new Vector3(startPosition.x + (x * prefabSpacing), startPosition.y, startPosition.z + (z * prefabSpacing));
@@ -26,6 +29,7 @@ public class PrefabSpawner : MonoBehaviour
                 spawnedPrefabs.Add(newPrefab);
             }
         }
+        
     }
 
     void Update()
@@ -59,7 +63,7 @@ public class PrefabSpawner : MonoBehaviour
                 }
             }
             spawnHeight = spawnHeight - 2;
-
+            LIMIT.position = new Vector3(LIMIT.position.x, LIMIT.position.y - 1f, LIMIT.position.z);
         }
     }
 }
