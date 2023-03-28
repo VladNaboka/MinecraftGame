@@ -6,7 +6,7 @@ public class ScoreManager : MonoBehaviour
     public static ScoreManager instance;
 
     public int score = 0;
-    public TMP_Text scoreText;
+    public Text scoreText;
 
     private void Awake()
     {
@@ -16,7 +16,7 @@ public class ScoreManager : MonoBehaviour
     private void Update()
     {
         // Update the UI Text object's text to show the current score value
-        scoreText.text = "Score: " + score.ToString();
+        scoreText.text = score.ToString();
     }
 
     public void UpdateScore(int value)

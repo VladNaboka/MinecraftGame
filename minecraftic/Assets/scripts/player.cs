@@ -32,13 +32,17 @@ public class player : MonoBehaviour
         }
     }*/
     private Rigidbody rb;
-    public float movementSpeed = 10.0f;
+    public float movementSpeed;
     public float rotationSpeed;
     public float reachDistance = 1f;
     public float collectionTime = 5f;
     public LayerMask coinLayer;
     public GameObject raycastSource;
     private int score = 0;
+
+
+    private float timer = 0.0f;
+    public float timerDes;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -51,6 +55,9 @@ public class player : MonoBehaviour
     }
     void Update()
     {
+        movementSpeed = GameManager.speedPlayer;
+        timerDes = GameManager.speedCount;
+
         //Movement
         float horizontalMovement = Input.GetAxis("Horizontal");
         float verticalMovement = Input.GetAxis("Vertical");
@@ -75,16 +82,39 @@ public class player : MonoBehaviour
         {
             // Call the CollectCoin method and pass in the coin object
             StartCoroutine(CountdownCoroutine());
-            CollectCoin(hit.collider.gameObject);
-        }
-        //
+            if (hit.transform.gameObject)
+            {
+                timer += Time.deltaTime;
+                Debug.Log(timer);
+                if (timer >= GameManager.SpeedController())
+                {
+                    Destroy(hit.collider.gameObject);
+                    GameManager.coins += 1;
+                    PlayerPrefs.SetInt("score", GameManager.coins);
 
+                    timer = 0.0f;
+                }
+            }
+            else
+            {
+                timer = 0.0f;
+            }
+            //CollectCoin(hit.collider.gameObject);
+        }
+        //if (Input.GetKeyDown(KeyCode.E))
+        //{
+        //    GameManager.SpeedBreakAdd();
+        //}
+        //if (Input.GetKeyDown(KeyCode.Q))
+        //{
+        //    GameManager.SpeedPlayer();
+        //}
     }
     void CollectCoin(GameObject coin)
     {
-        score += 1;
-        Destroy(coin);
-        ScoreManager.instance.UpdateScore(score);
+            score += 1;
+            Destroy(coin);
+            ScoreManager.instance.UpdateScore(score);
     }
 
 }
