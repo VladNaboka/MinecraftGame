@@ -14,6 +14,7 @@ public class PrefabSpawner : MonoBehaviour
     public Vector3 startPosition;
     private List<GameObject> spawnedPrefabs = new List<GameObject>();
 
+    public player ps;
     void Start()
     {
         startPosition = origin.position;
@@ -50,6 +51,8 @@ public class PrefabSpawner : MonoBehaviour
         {
             // Clear the list of spawned prefabs
             spawnedPrefabs.Clear();
+
+            ps.LookDown = true;
 
             // Spawn new prefabs at a lower height
             for (int x = 0; x < gridDimensions.x; x++)
